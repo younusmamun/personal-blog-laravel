@@ -14,13 +14,72 @@ use App\Models\Post;
 |
 */
 
-// Route::get('/greetings', function () {
-//     return "Hello world";
+// Route::get('/', function () {
+//     return view('posts');
 // });
 
-Route::get('/', function () {
-    return view('welcome');
-    //return "Hello world";
-    //return ['foo'=>'bar'];  //json
+
+
+/*
+
+//Route::get('/posts', function () {
+Route::get('/posts/{post}', function ($slug) {
+
+    //echo $slug;
+
+     //$post = file_get_contents(__DIR__ . '/../resources/posts/my-first-post.html');
+     //$post = file_get_contents(__DIR__ . "/../resources/posts/{$slug}.html");
+     
+    $path = __DIR__ . "/../resources/posts/{$slug}.html";
+    // ddd($path);
+
+    if(! file_exists($path)){
+        // abort(404);
+        //dd('file does not exist');
+        ddd('file does not exist');
+        //return redirect('/');
+    }
+
+    //$post = file_get_contents($path);
+
+    $post = cache()->remember("posts.{$slug}", 3600, function() use ($path){
+        var_dump('file_get_contents');
+        return file_get_contents($path);
+    });
+
+    //$post = cache()->remember("posts.{$slug}", 3600, fn() => file_get_contents($path));
+    
+
+    return view('post', [
+        //'post'=> '<h1> Post title</h1>' // catched as $post variable in view
+        'post'=> $post
+    ]);
+
+ })->where('post','[A-z_\-]+');
+
+//})->whereAlpha('post');
+
+
+
+*/
+
+
+Route::get('/greeting', function () {
+    return 'Hello World';
 });
+
+Route::get('/', function () {
+    return view('posts',[
+        'posts' => Post::all()
+    ]);  
+});
+
+Route::get('/posts/{post}', function ($id) {
+    return view('post',[
+        'post' => Post::findOrFail($id)
+    ]);
+});
+
+
+
 
